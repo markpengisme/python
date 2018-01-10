@@ -157,7 +157,7 @@ def handle_message(event):
                     ),
                     URITemplateAction(
                         label='github原始碼',
-                        uri='https://github.com/markpengisme/Python'
+                        uri='https://github.com/markpengisme/Python/tree/master/linestockbot'
                     ),
                     URITemplateAction(
                         label='聯絡作者',
