@@ -5,7 +5,7 @@ import os
 print("##  write_tick_data_to_each_file(start,end)\tdateformat:'yyyymmdd'")
 print("##  write_tick_data_to_one_file(start,end)\tdateformat:'yyyymmdd'")
 print("##  write_min_data_to_one_file(start,end)\tdateformat:'yyyymmdd'")
-
+#大盤tick資料
 def write_tick_data_to_each_file(inputTime1,inputTime2):
     nowTime=int(time.strftime("%Y%m%d"))
     path = "./write_tick_data_to_each_file"
@@ -134,5 +134,5 @@ def write_min_data_to_one_file(inputTime1,inputTime2):
             print("檔案以寫入write_min_data_to_one_file資料夾")
         else:
             print("時間格式有錯")
-            print("或著不在'20141015'和今天'"+str(nowTime)+"'中")
+            print("或著不在'20041015'和今天'"+str(nowTime)+"'中")
             
