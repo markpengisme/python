@@ -18,5 +18,5 @@
 - Crawl Taifex's spot month index history data , and output to one csv
 - TX_example_2000to2018 為輸出範例
 - TX_example_2000to2018 is an output example
-- The modules needed are `requests,pandas,datetime,os`
-- Debug modules are `traceback,sys,csv`
+- The modules needed are `requests,pandas,datetime,os,csv`
+- Debug modules are `traceback,sys`
