@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
-import requests,pandas
+import requests,pandas,os,csv
 import datetime
-import os,traceback,sys,csv
+#import traceback,sys  #debug
 
 df_header=['日期','契約','到期月份(週別)','開盤價','最高價','最低價','最後成交價','漲跌價','漲跌%',
  '*盤後交易時段成交量','*一般交易時段成交量','*合計成交量','結算價','*未沖銷契約量',
