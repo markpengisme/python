@@ -25,6 +25,6 @@
 - Debug modules are `traceback,sys`
 
 ### Real Time Crawler
-- Crawl minutes data in real time 
+- Crawl 5 seconds data in real time 
 - Whether 'Regular' or 'After Hours'
 - real_time_crawler.py
