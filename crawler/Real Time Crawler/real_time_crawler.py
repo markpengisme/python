@@ -17,7 +17,7 @@ def main():
 
 	#init
 	count,url,export_csv=init_parm()
-
+	init_header(export_csv)
 	#Every 5 secs check
 	while 1:
 		if int(time.strftime('%S'))%5==0:
