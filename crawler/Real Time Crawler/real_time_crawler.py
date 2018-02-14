@@ -10,6 +10,7 @@ url2="http://info512ah.taifex.com.tw/Future/FusaQuote_Norl.aspx"
 										|________________________________________|
 '''
 '''
+	##TODO 0:睡覺測試
 	##TODO 1:觸價寄信
 '''
 
@@ -42,17 +43,28 @@ def check_regular_or_after_hour(count,url,export_csv):
 	'''
 		Check contract is day or night
 	'''
-
+	if ((time.localtime().tm_hour==5 and time.localtime().tm_min==0 and time.localtime().tm_sec==5) or 
+		(time.localtime().tm_hour==13 and time.localtime().tm_min==45 and time.localtime().tm_sec==0)):
+		print("睡覺覺時間")
+		while(1):
+			if ((time.localtime().tm_hour==8 and time.localtime().tm_min==44 and time.localtime().tm_sec==55) or 
+				(time.localtime().tm_hour==14 and time.localtime().tm_min==59 and time.localtime().tm_sec==55)):
+				print("開盤啦")
+				break
+			
 	if time.localtime().tm_hour==8 and time.localtime().tm_min==44 and time.localtime().tm_sec==55:
 		count=1
 		url=url1
 		export_csv='日盤_'+str(time.strftime('%Y%m%d'))+'_tx.csv'
 		init_header(export_csv)
+	
 	if time.localtime().tm_hour==14 and time.localtime().tm_min==59 and time.localtime().tm_sec==55:	
 		count=1
 		url=url2
 		export_csv='夜盤_'+str(time.strftime('%Y%m%d'))+'_tx.csv'
 		init_header(export_csv)
+
+	
 
 	return count,url,export_csv
 
