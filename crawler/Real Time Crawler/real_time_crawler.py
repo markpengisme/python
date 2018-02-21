@@ -21,10 +21,11 @@ def main():
 	init_header(export_csv)
 	#Every 5 secs check
 	while 1:
-		if int(time.strftime('%S'))%5==0:
-			count,url,export_csv=check_regular_or_after_hour(count,url,export_csv)
-			count=write_data(count,url,export_csv)
-			time.sleep(3.9)
+		vartime=time.localtime()
+		if vartime.tm_sec%5==0:
+			count,url,export_csv=check_regular_or_after_hour(count,url,export_csv,vartime)
+			count=write_data(count,url,export_csv,vartime)
+			time.sleep(4)
 
 
 def init_parm():
@@ -39,12 +40,12 @@ def init_parm():
 	return count,url,export_csv
 
 
-def check_regular_or_after_hour(count,url,export_csv):
+def check_regular_or_after_hour(count,url,export_csv,vartime):
 	'''
 		Check contract is day or night
 	'''
-	if ((time.localtime().tm_hour==5 and time.localtime().tm_min==0 and time.localtime().tm_sec==5) or 
-		(time.localtime().tm_hour==13 and time.localtime().tm_min==45 and time.localtime().tm_sec==0)):
+	if ((vartime.tm_hour==5 and vartime.tm_min==0 and vartime.tm_sec==5) or 
+		(vartime.tm_hour==13 and vartime.tm_min==45 and vartime.tm_sec==5)):
 		print("睡覺覺時間")
 		while(1):
 			if ((time.localtime().tm_hour==8 and time.localtime().tm_min==44 and time.localtime().tm_sec==55) or 
@@ -52,13 +53,13 @@ def check_regular_or_after_hour(count,url,export_csv):
 				print("開盤啦")
 				break
 			
-	if time.localtime().tm_hour==8 and time.localtime().tm_min==44 and time.localtime().tm_sec==55:
+	if vartime.tm_hour==8 and vartime.tm_min==44 and vartime.tm_sec==55:
 		count=1
 		url=url1
 		export_csv='日盤_'+str(time.strftime('%Y%m%d'))+'_tx.csv'
 		init_header(export_csv)
 	
-	if time.localtime().tm_hour==14 and time.localtime().tm_min==59 and time.localtime().tm_sec==55:	
+	if vartime.tm_hour==14 and vartime.tm_min==59 and vartime.tm_sec==55:	
 		count=1
 		url=url2
 		export_csv='夜盤_'+str(time.strftime('%Y%m%d'))+'_tx.csv'
@@ -80,7 +81,7 @@ def init_header(export_csv):
 		csv_writer.writerow(df_header)
     
 
-def write_data(count,url,export_csv):
+def write_data(count,url,export_csv,vartime):
 	'''
 		Process data
 	'''
@@ -89,7 +90,7 @@ def write_data(count,url,export_csv):
 		res=requests.post(url)
 		res.encoding='utf-8'
 		df=pandas.read_html(res.text, attrs={'class':'custDataGrid'})[0].iloc[[2], :]
-		df[14]=str(time.strftime('%Y/%m/%d %H:%M:%S'))
+		df[14]=str(time.strftime('%Y/%m/%d %H:%M:%S',vartime))
 		if url==url1:	# '狀態' 
 			df[1]='日盤'
 		else:
