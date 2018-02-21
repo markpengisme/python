@@ -32,8 +32,8 @@ def init_parm():
 		Initialize url,except_csv,count
 	'''
 
-	url="http://info512ah.taifex.com.tw/Future/FusaQuote_Norl.aspx"
-	export_csv='夜盤_'+str(time.strftime('%Y%m%d'))+'_tx.csv'
+	url=url1
+	export_csv=str(time.strftime('%Y%m%d'))+'_tx.csv'
 	count=1
 
 	return count,url,export_csv
@@ -90,7 +90,9 @@ def write_data(count,url,export_csv):
 		res.encoding='utf-8'
 		df=pandas.read_html(res.text, attrs={'class':'custDataGrid'})[0].iloc[[2], :]
 		df[14]=str(time.strftime('%Y/%m/%d %H:%M:%S'))
-		if(url==url2):	# '狀態' = 夜盤
+		if url==url1:	# '狀態' 
+			df[1]='日盤'
+		else:
 			df[1]='夜盤'
 		df.to_csv(export_csv,  mode='a+', header=False, index=False)
 		print('{}已寫入資料第{}次, 在時間:{}'.format(export_csv, count, time.ctime()))
