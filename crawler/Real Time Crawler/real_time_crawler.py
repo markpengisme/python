@@ -1,6 +1,7 @@
-import requests, pandas, csv, time, datetime
+import requests, pandas, csv, time, datetime,os
 url1="http://info512.taifex.com.tw/Future/FusaQuote_Norl.aspx"
 url2="http://info512ah.taifex.com.tw/Future/FusaQuote_Norl.aspx"
+path = "./history"
 
 
 '''
@@ -8,9 +9,6 @@ url2="http://info512ah.taifex.com.tw/Future/FusaQuote_Norl.aspx"
 									   /|\										 |
 										|										 |
 										|________________________________________|
-'''
-'''
-	##TODO 1:觸價寄信
 '''
 
 def main():
@@ -21,7 +19,6 @@ def main():
 	#Every 5 secs check
 	while 1:
 		vartime=time.localtime()
-		print(vartime.tm_sec)
 		if vartime.tm_sec%5==0:
 			count,url,export_csv=check_regular_or_after_hour(count,url,export_csv,vartime)
 			count=write_data(count,url,export_csv,vartime)
@@ -32,11 +29,13 @@ def init_parm():
 	'''
 		Initialize url,except_csv,count
 	'''
+	if not os.path.exists(path):
+		os.makedirs(path)
 	if (time.localtime().tm_hour>=8 and time.localtime().tm_min>=45) and (time.localtime().tm_hour<=13 and time.localtime().tm_min<=45):
 		url=url1
 	else:
 		url=url2
-	export_csv=str(time.strftime('%Y%m%d'))+'_tx.csv'
+	export_csv=path+'/'+str(time.strftime('%Y%m%d'))+'_tx.csv'
 	count=1
 
 	return count,url,export_csv
@@ -49,10 +48,11 @@ def check_regular_or_after_hour(count,url,export_csv,vartime):
 	if ((vartime.tm_hour==5 and vartime.tm_min==0 and vartime.tm_sec==5) or 
 		(vartime.tm_hour==13 and vartime.tm_min==45 and vartime.tm_sec==5)):
 		print("睡覺覺時間")
-
 		#sleep two day if today is Saturday
-		if(datetime.date.today().isoweekday()==6)
-			time.sleep(86400*2)
+		if datetime.date.today().isoweekday()==6:
+			time.sleep(86400*2)		
+
+
 		while(1):
 			if ((time.localtime().tm_hour==8 and time.localtime().tm_min==44 and time.localtime().tm_sec==55) or 
 				(time.localtime().tm_hour==14 and time.localtime().tm_min==59 and time.localtime().tm_sec==55)):
@@ -64,13 +64,13 @@ def check_regular_or_after_hour(count,url,export_csv,vartime):
 	if vartime.tm_hour==8 and vartime.tm_min==45 and vartime.tm_sec==0:
 		count=1
 		url=url1
-		export_csv='日盤_'+str(time.strftime('%Y%m%d'))+'_tx.csv'
+		export_csv=path+'/''日盤_'+str(time.strftime('%Y%m%d'))+'_tx.csv'
 		init_header(export_csv)
 	
 	if vartime.tm_hour==15 and vartime.tm_min==0 and vartime.tm_sec==0:	
 		count=1
 		url=url2
-		export_csv='夜盤_'+str(time.strftime('%Y%m%d'))+'_tx.csv'
+		export_csv=path+'/''夜盤_'+str(time.strftime('%Y%m%d'))+'_tx.csv'
 		init_header(export_csv)
 
 	
@@ -104,7 +104,7 @@ def write_data(count,url,export_csv,vartime):
 		else:
 			df[1]='夜盤'
 		df.to_csv(export_csv,  mode='a+', header=False, index=False)
-		print('{}已寫入資料第{}次, 在時間:{}'.format(export_csv, count, time.ctime()))
+		print('{}已寫入資料第{}次, 在時間:{}'.format(export_csv[10:-1], count, time.ctime()))
 		print('即時報價'+df.iloc[0,2])	# Still a dataframe after using iloc
 		return count+1
 	except IndexError:
