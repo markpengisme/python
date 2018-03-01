@@ -3,14 +3,12 @@ url1="http://info512.taifex.com.tw/Future/FusaQuote_Norl.aspx"
 url2="http://info512ah.taifex.com.tw/Future/FusaQuote_Norl.aspx"
 path = "./history"
 
-
 '''
 	main -> init_parm -> LOOP(check_regular_or_after_hour [-> init_parm] -> write_data)
 									   /|\										 |
 										|										 |
 										|________________________________________|
 '''
-
 def main():
 
 	#init
@@ -31,7 +29,8 @@ def init_parm():
 	'''
 	if not os.path.exists(path):
 		os.makedirs(path)
-	if (time.localtime().tm_hour>=8 and time.localtime().tm_min>=45) and (time.localtime().tm_hour<=13 and time.localtime().tm_min<=45):
+	if ((time.localtime().tm_hour*60+time.localtime().tm_min>=8*60+45) and 
+		(time.localtime().tm_hour*60+time.localtime().tm_min<=13*60+45)):
 		url=url1
 	else:
 		url=url2
