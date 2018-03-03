@@ -58,7 +58,7 @@ def check_regular_or_after_hour(count,url,export_csv,vartime):
 				print("開盤啦")
 				count=0
 				break
-			time.sleep(0.9)
+			time.sleep(0.4)
 			
 	if vartime.tm_hour==8 and vartime.tm_min==45 and vartime.tm_sec==0:
 		count=1
